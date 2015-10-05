@@ -7,7 +7,7 @@ module.exports = ( grunt ) ->
         options:
             baseUrl: 'src'
             include: '<%=package.name%>'
-            exclude: ['scalejs']
+            exclude: ['scalejs','text','almond','knockout','jsep',]
             mainConfigFile: 'rjsconfig.js'
             out: 'build/<%=package.name%>.js'
             optimize: 'none'
