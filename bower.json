@@ -1,23 +1,24 @@
 {
   "name": "scalejs.expression-jsep",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "",
-  "authors": [
-  ],
+  "authors": [],
   "description": "",
   "main": [
     "dist/scalejs.expression-jsep.min.js"
   ],
   "ignore": [
-    "*", "!dist/*.js"
+    "*",
+    "!dist/*.js"
   ],
   "dependencies": {
     "scalejs": "lisovin/scalejs",
     "jsep": "~0.3.0",
-    "knockout": "~3.3.0"
+    "knockout": "~3.3.0",
+    "text": "~2.0.14",
+    "almond": "~0.3.1"
   },
   "devDependencies": {
     "requirejs": "latest"
   }
 }
-

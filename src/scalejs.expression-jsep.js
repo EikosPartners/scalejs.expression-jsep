@@ -1,4 +1,5 @@
-define([
+
+define('scalejs.expression-jsep',[
     'scalejs!core',
     'jsep',
     'knockout'
@@ -26,7 +27,7 @@ define([
             Object.keys(tree).forEach(function (key) {
                 if (key === 'left' || key === 'right' || key === 'argument') {
                     if (tree[key].type === 'Identifier') {
-                        // check for uniqueness of idntifier
+                        // check for uniqueness o f idntifier
                         if (ids.indexOf(tree[key].name) === -1) {
                             ids.push(tree[key].name);
                         }
@@ -154,7 +155,16 @@ define([
                 case 'Identifier':
                     returnVal = mapFunc(tree.name);
                     return returnVal;
-
+                case 'MemberExpression':
+                    tree.object = expr(tree.object);
+                    // unwrap is used as an object may have observable values..?
+                    if (tree.property.type == 'Identifier') {
+                        returnVal = ko.unwrap(tree.object[tree.property.name]);
+                        return returnVal;
+                    }
+                    tree.property = expr(tree.property);
+                    returnVal = ko.unwrap(tree.object[tree.property]);    
+                    return returnVal;
                 default:
                     return tree.value;
             }
@@ -170,3 +180,4 @@ define([
         }
     });
 });
+
