@@ -160,11 +160,11 @@ define('scalejs.expression-jsep',[
                     tree.object = expr(tree.object);
                     // unwrap is used as an object may have observable values..?
                     if (tree.property.type == 'Identifier') {
-                        returnVal = ko.unwrap(tree.object[tree.property.name]);
-                        return returnVal;
+                        tree.property.value = tree.property.name;
+                    } else {
+                        tree.property.value = expr(tree.property);
                     }
-                    tree.property = expr(tree.property);
-                    returnVal = ko.unwrap(tree.object[tree.property]);    
+                    returnVal = ko.unwrap((tree.object||{})[tree.property.value]);    
                     return returnVal;
                 default:
                     return tree.value;
