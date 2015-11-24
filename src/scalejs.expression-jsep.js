@@ -124,7 +124,7 @@ define('scalejs.expression-jsep',[
                         console.error('error parsing expr:', parseTree, ex);
                         return '';
                     }
-                    console.log('unary:', tree.operator, tree.argument.value, returnVal);
+                    //console.log('unary:', tree.operator, tree.argument.value, returnVal);
                     return returnVal;
                 case 'LogicalExpression':
                     left = expr(tree.left);
@@ -150,7 +150,7 @@ define('scalejs.expression-jsep',[
                         console.error('There was an error when parsing expression', parseTree, ex);
                         return '';
                     }
-                    console.log('Logical Operation:', tree.left.value, tree.operator, tree.right.value, returnVal);
+                    //console.log('Logical Operation:', tree.left.value, tree.operator, tree.right.value, returnVal);
                     return returnVal;
                 case 'Identifier':
                     returnVal = mapFunc(tree.name);
