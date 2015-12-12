@@ -166,6 +166,16 @@ define('scalejs.expression-jsep',[
                     }
                     returnVal = ko.unwrap((tree.object||{})[tree.property.value]);    
                     return returnVal;
+                 case 'CallExpression':
+                    returnVal = '';
+                    tree.callee = expr(tree.callee);
+                    tree.arguments = tree.arguments.map(function (arg) {
+                        return expr(arg);
+                    });
+                    if(tree.callee instanceof Function) {
+                        returnVal = tree.callee.apply(this, tree.arguments);
+                    }
+                    return returnVal;         
                 default:
                     return tree.value;
             }
