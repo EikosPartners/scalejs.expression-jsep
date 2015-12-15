@@ -102,7 +102,7 @@ define('scalejs.expression-jsep',[
                         } else if (opts.evaluate) {
                             returnVal = opts.evaluate(tree.operator, left, right);
                         } else {
-                        returnVal = eval(left + tree.operator + right);
+                        returnVal = eval(left + ' ' + tree.operator +  ' ' + right);
                         }
                     } catch (ex) {
                         console.error('error parsing expr:', parseTree, ex);
