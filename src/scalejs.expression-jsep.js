@@ -83,13 +83,17 @@ define('scalejs.expression-jsep',[
                     
                     left =  left === 'true'  || left === true ? true :
                             left === 'false' || left === false ? false :
-                            left === '' || left === null ? '""' :
+                           left === '' || left === null ? '""' :
+                            left === 'undefined' || left === undefined ? undefined :
                             isFinite(Number(left)) ? Number(left) :
+                            typeof left === 'object' ? JSON.stringify(left) :
                             '"' + left + '"';
                     right = right === 'true' || right === true ? true :
                             right === 'false' || right === false ? false :
                             right === '' || right === null ? '""' :
+                            right === 'undefined' || right === undefined ? undefined :
                             isFinite(Number(right)) ? Number(right) :
+                            typeof right === 'object' ? JSON.stringify(right) :
                             '"' + right + '"';
 
                     tree.left.value = left;
@@ -129,16 +133,20 @@ define('scalejs.expression-jsep',[
                 case 'LogicalExpression':
                     left = expr(tree.left);
                     right = expr(tree.right);
-
-                    left = left === 'true' || left === true ? true :
+                    
+                    left =  left === 'true'  || left === true ? true :
                             left === 'false' || left === false ? false :
-                            left === '' || left === null  ? '""' :
+                            left === '' || left === null ? '""' :
+                            left === 'undefined' || left === undefined ? undefined :
                             isFinite(Number(left)) ? Number(left) :
+                            typeof left === 'object' ? JSON.stringify(left) :
                             '"' + left + '"';
                     right = right === 'true' || right === true ? true :
                             right === 'false' || right === false ? false :
                             right === '' || right === null ? '""' :
+                            right === 'undefined' || right === undefined ? undefined :
                             isFinite(Number(right)) ? Number(right) :
+                            typeof right === 'object' ? JSON.stringify(right) :
                             '"' + right + '"';
 
                     tree.left.value = left;
@@ -174,7 +182,12 @@ define('scalejs.expression-jsep',[
                     if(tree.callee instanceof Function) {
                         returnVal = tree.callee.apply(this, tree.arguments);
                     }
-                    return returnVal;         
+                    return returnVal;       
+                case 'ArrayExpression':
+                    returnVal = tree.elements.map(function (arg) {
+                        return expr(arg);
+                    });
+                    return returnVal;
                 default:
                     return tree.value;
             }
@@ -190,4 +203,3 @@ define('scalejs.expression-jsep',[
         }
     });
 });
-

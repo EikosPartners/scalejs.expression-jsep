@@ -1,11 +1,11 @@
 {
   "name": "scalejs.expression-jsep",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "homepage": "",
   "authors": [],
   "description": "",
   "main": [
-    "dist/scalejs.expression-jsep.min.js"
+    "dist/scalejs.expression-jsep.js"
   ],
   "ignore": [
     "*",
