@@ -81,7 +81,7 @@ define('scalejs.expression-jsep',[
                 case 'BinaryExpression':
                     left = expr(tree.left);
                     right = expr(tree.right);
-                    
+
                     left =  left === 'true'  || left === true ? true :
                             left === 'false' || left === false ? false :
                            left === '' || left === null ? '""' :
@@ -116,7 +116,15 @@ define('scalejs.expression-jsep',[
                     return returnVal;
 
                 case 'UnaryExpression':
-                    tree.argument.value = Number(expr(tree.argument)) || 0;
+                    var value = expr(tree.argument);
+                        value =  value === 'true'  || value === true ? true :
+                            value === 'false' || value === false ? false :
+                           value === '' || value === null ? '""' :
+                            value === 'undefined' || value === undefined ? undefined :
+                            isFinite(Number(value)) ? Number(value) :
+                            typeof value === 'object' ? JSON.stringify(value) :
+                            '"' + value + '"';
+                        tree.argument.value = value;
                     try {
                         if (Object.keys(opts.unary).indexOf(tree.operator) > -1) {
                             returnVal = opts.unary[tree.operator](tree.argument);
@@ -134,7 +142,7 @@ define('scalejs.expression-jsep',[
                 case 'LogicalExpression':
                     left = expr(tree.left);
                     right = expr(tree.right);
-                    
+
                     left =  left === 'true'  || left === true ? true :
                             left === 'false' || left === false ? false :
                             left === '' || left === null ? '""' :
@@ -172,7 +180,7 @@ define('scalejs.expression-jsep',[
                     } else {
                         tree.property.value = expr(tree.property);
                     }
-                    returnVal = ko.unwrap((tree.object||{})[tree.property.value]);    
+                    returnVal = ko.unwrap((tree.object||{})[tree.property.value]);
                     return returnVal;
                  case 'CallExpression':
                     returnVal = '';
@@ -183,7 +191,7 @@ define('scalejs.expression-jsep',[
                     if(tree.callee instanceof Function) {
                         returnVal = tree.callee.apply(this, tree.arguments);
                     }
-                    return returnVal;       
+                    return returnVal;
                 case 'ArrayExpression':
                     returnVal = tree.elements.map(function (arg) {
                         return expr(arg);
