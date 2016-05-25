@@ -1,7 +1,6 @@
 
-
 define('scalejs.expression-jsep',[
-    'scalejs!core',
+    'scalejs.core',
     'jsep',
     'knockout'
 ], function (

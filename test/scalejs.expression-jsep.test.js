@@ -1,5 +1,5 @@
 define([
-    'scalejs!core', 'scalejs!application'
+    'scalejs.core', 'scalejs.application'
 ], function(
     core
 ) {
