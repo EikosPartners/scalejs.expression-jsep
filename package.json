@@ -22,5 +22,9 @@
     "grunt-newer": "~0.7.0",
     "rjs-build-analysis": "0.0.3"
   },
+  "dependencies": {
+    "jsep" : "~0.3.0",
+    "knockout": "latest"
+  },
   "main" : "dist/scalejs.expression-jsep"
 }
