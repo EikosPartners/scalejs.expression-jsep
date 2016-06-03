@@ -1,14 +1,8 @@
 
-define('scalejs.expression-jsep',[
-    'scalejs.core',
-    'jsep',
-    'knockout'
-], function (
-    core,
-    jsep,
-    ko
-) {
-    'use strict';
+import core from 'scalejs.core';
+import jsep from 'jsep';
+import ko from 'knockout';
+    
 
     var is = core.type.is;
 
@@ -210,4 +204,4 @@ define('scalejs.expression-jsep',[
             evaluate: evaluate
         }
     });
-});
+

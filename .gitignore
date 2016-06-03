@@ -354,3 +354,6 @@ build/
 # Cordova
 platforms/
 plugins/
+
+# JetBrains IDE's
+.idea/
