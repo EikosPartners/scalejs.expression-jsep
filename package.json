@@ -11,7 +11,7 @@
   "dependencies": {
     "jsep": "~0.3.0",
     "knockout": "latest",
-    "scalejs": "git+https://github.com/EikosPartners/scalejs.git#es6"
+    "scalejs": "latest"
   },
   "main": "dist/scalejs.expression-jsep"
 }
