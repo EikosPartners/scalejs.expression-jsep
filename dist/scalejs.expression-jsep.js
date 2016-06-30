@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.evaluate = exports.getIdentifiers = undefined;
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _scalejs = require('scalejs.core');
@@ -183,3 +188,7 @@ _scalejs2.default.registerExtension({
         evaluate: evaluate
     }
 });
+
+exports.getIdentifiers = getIdentifiers;
+exports.evaluate = evaluate;
+//# sourceMappingURL=scalejs.expression-jsep.js.map

@@ -1,4 +1,3 @@
-
 import core from 'scalejs.core';
 import jsep from 'jsep';
 import ko from 'knockout';
@@ -204,4 +203,9 @@ import ko from 'knockout';
             evaluate: evaluate
         }
     });
+
+    export {
+        getIdentifiers,
+        evaluate
+    }
 
