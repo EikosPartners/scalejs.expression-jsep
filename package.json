@@ -1,6 +1,6 @@
 {
   "name": "scalejs.expression-jsep",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build": "babel src/ --presets babel-preset-es2015 --out-dir dist/ --source-maps"
   },
@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "jsep": "~0.3.0",
-    "knockout": "^3.4.0",
-    "scalejs": ">=0.4.1"
+    "knockout": "^3.4.0"
   },
   "main": "dist/scalejs.expression-jsep"
 }

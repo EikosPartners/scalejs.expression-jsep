@@ -7,7 +7,7 @@ Running Code Coverage on Scalejs
         -This will generate the RefDataEditor/coverage directory and populate 
          the coverage report
          
-    3) Open 'RefDataEditor/coverage/PhantomJS 1.9.8 (Linux 0.0.0)/index.html' in 
+    3) Open 'test/coverage/PhantomJS 1.9.8 (Linux 0.0.0)/index.html' in 
         your web browser to view the report
 
 Running Karma testing with auto-watch is useful when developing to ensure no 

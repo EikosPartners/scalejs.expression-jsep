@@ -7,21 +7,13 @@ exports.evaluate = exports.getIdentifiers = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _scalejs = require('scalejs.core');
-
-var _scalejs2 = _interopRequireDefault(_scalejs);
-
 var _jsep = require('jsep');
 
 var _jsep2 = _interopRequireDefault(_jsep);
 
 var _knockout = require('knockout');
 
-var _knockout2 = _interopRequireDefault(_knockout);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var is = _scalejs2.default.type.is;
 
 function getIdentifiers(term) {
     // TODO: error checking for poorly formatted expressions
@@ -157,7 +149,7 @@ function evaluate(term, mapFunc, opts) {
                 } else {
                     tree.property.value = expr(tree.property);
                 }
-                returnVal = _knockout2.default.unwrap((tree.object || {})[tree.property.value]);
+                returnVal = (0, _knockout.unwrap)((tree.object || {})[tree.property.value]);
                 return returnVal;
             case 'CallExpression':
                 returnVal = '';
@@ -181,13 +173,6 @@ function evaluate(term, mapFunc, opts) {
 
     return expr(parseTree);
 }
-
-_scalejs2.default.registerExtension({
-    expression: {
-        getIdentifiers: getIdentifiers,
-        evaluate: evaluate
-    }
-});
 
 exports.getIdentifiers = getIdentifiers;
 exports.evaluate = evaluate;
