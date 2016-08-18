@@ -171,15 +171,15 @@ function evaluate(term, mapFunc, opts) {
                 returnVal = unwrap((tree.object || {})[tree.property.value]);
                 return returnVal;
             case 'CallExpression':
-                returnVal = '';
-                tree.callee = expr(tree.callee);
-                tree.arguments = tree.arguments.map(function (arg) {
-                    return expr(arg);
-                });
-                if (tree.callee instanceof Function) {
-                    returnVal = tree.callee.apply(this, tree.arguments);
-                }
-                return returnVal;
+                    returnVal = '';
+                    var callee = expr(tree.callee);
+                    tree.arguments = tree.arguments.map(function (arg) {
+                        return expr(arg);
+                    });
+                    if (callee instanceof Function) {
+                        returnVal = callee.apply(tree.callee.object, tree.arguments);
+                    }
+                    return returnVal;
             case 'ArrayExpression':
                 returnVal = tree.elements.map(function (arg) {
                     return expr(arg);
