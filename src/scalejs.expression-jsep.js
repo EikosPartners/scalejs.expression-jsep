@@ -31,6 +31,16 @@ function getIdentifiers(term) {
     return ids;
 }
 
+function internalEval(value) {
+    return value === 'true' || value === true ? true :
+        value === 'false' || value === false ? false :
+            value === '' || value === null ? '""' :
+                value === 'undefined' || value === undefined ? undefined :
+                    isFinite(Number(value)) ? Number(value) :
+                        typeof value === 'object' ? JSON.stringify(value) :
+                            '"' + value + '"';
+}
+
 function evaluate(term, mapFunc, opts) {
 
     opts = opts || {};
@@ -63,27 +73,18 @@ function evaluate(term, mapFunc, opts) {
     function expr(tree) {
         var returnVal,
             left,
-            right;
+            right,
+            test,
+            consequent,
+            alternate;
 
         switch (tree.type) {
             case 'BinaryExpression':
                 left = expr(tree.left);
                 right = expr(tree.right);
 
-                left = left === 'true' || left === true ? true :
-                    left === 'false' || left === false ? false :
-                        left === '' || left === null ? '""' :
-                            left === 'undefined' || left === undefined ? undefined :
-                                isFinite(Number(left)) ? Number(left) :
-                                    typeof left === 'object' ? JSON.stringify(left) :
-                                        '"' + left + '"';
-                right = right === 'true' || right === true ? true :
-                    right === 'false' || right === false ? false :
-                        right === '' || right === null ? '""' :
-                            right === 'undefined' || right === undefined ? undefined :
-                                isFinite(Number(right)) ? Number(right) :
-                                    typeof right === 'object' ? JSON.stringify(right) :
-                                        '"' + right + '"';
+                left = internalEval(left);
+                right = internalEval(right);;
 
                 tree.left.value = left;
                 tree.right.value = right;
@@ -102,16 +103,9 @@ function evaluate(term, mapFunc, opts) {
                 }
                 //console.log('binary:', tree.left.value, tree.operator, tree.right.value, returnVal);
                 return returnVal;
-
             case 'UnaryExpression':
                 var value = expr(tree.argument);
-                value = value === 'true' || value === true ? true :
-                    value === 'false' || value === false ? false :
-                        value === '' || value === null ? '""' :
-                            value === 'undefined' || value === undefined ? undefined :
-                                isFinite(Number(value)) ? Number(value) :
-                                    typeof value === 'object' ? JSON.stringify(value) :
-                                        '"' + value + '"';
+                value = internalEval(value);
                 tree.argument.value = value;
                 try {
                     if (Object.keys(opts.unary).indexOf(tree.operator) > -1) {
@@ -129,36 +123,32 @@ function evaluate(term, mapFunc, opts) {
                 return returnVal;
             case 'LogicalExpression':
                 left = expr(tree.left);
-                right = expr(tree.right);
-
-                left = left === 'true' || left === true ? true :
-                    left === 'false' || left === false ? false :
-                        left === '' || left === null ? '""' :
-                            left === 'undefined' || left === undefined ? undefined :
-                                isFinite(Number(left)) ? Number(left) :
-                                    typeof left === 'object' ? JSON.stringify(left) :
-                                        '"' + left + '"';
-                right = right === 'true' || right === true ? true :
-                    right === 'false' || right === false ? false :
-                        right === '' || right === null ? '""' :
-                            right === 'undefined' || right === undefined ? undefined :
-                                isFinite(Number(right)) ? Number(right) :
-                                    typeof right === 'object' ? JSON.stringify(right) :
-                                        '"' + right + '"';
-
+                left = internalEval(left);
                 tree.left.value = left;
-                tree.right.value = right;
 
-                try {
-                    returnVal = eval(left + tree.operator + right);
-                } catch (ex) {
-                    console.error('There was an error when parsing expression', parseTree, ex);
-                    return '';
+                if((tree.operator === '&&' && !left) || (tree.operator === '||' && left)) { //short-circuit
+                    returnVal = left;
+                    tree.left.value = left;
+                } else {
+                    right = expr(tree.right);
+                    right = internalEval(right);
+                    tree.right.value = right;
+
+                    try {
+                        returnVal = eval(left + tree.operator + right);
+                    } catch (ex) {
+                        console.error('There was an error when parsing expression', parseTree, ex);
+                        return '';
+                    }                    
                 }
+
                 //console.log('Logical Operation:', tree.left.value, tree.operator, tree.right.value, returnVal);
                 return returnVal;
             case 'Identifier':
                 returnVal = mapFunc(tree.name);
+                return returnVal;
+            case 'Literal':
+                returnVal = tree.value;
                 return returnVal;
             case 'MemberExpression':
                 tree.object = expr(tree.object);
@@ -185,6 +175,14 @@ function evaluate(term, mapFunc, opts) {
                     return expr(arg);
                 });
                 return returnVal;
+            case 'ConditionalExpression':
+                test = expr(tree.test);
+                if(test) {
+                    returnVal = expr(tree.consequent);
+                } else {
+                    returnVal = expr(tree.alternate);
+                }
+                return returnVal;
             default:
                 return tree.value;
         }
@@ -197,4 +195,3 @@ export {
 getIdentifiers,
 evaluate
 }
-
