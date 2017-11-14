@@ -130,8 +130,12 @@ function evaluate(term, mapFunc, opts) {
 
                 if (tree.operator === '&&' && !left || tree.operator === '||' && left) {
                     //short-circuit
-                    returnVal = left;
-                    tree.left.value = left;
+                    try {
+                        returnVal = eval(left);
+                    } catch (ex) {
+                        console.error('There was an error when parsing expression', parseTree, ex);
+                        return '';
+                    }
                 } else {
                     right = expr(tree.right);
                     right = internalEval(right);
