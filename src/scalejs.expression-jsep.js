@@ -127,8 +127,12 @@ function evaluate(term, mapFunc, opts) {
                 tree.left.value = left;
 
                 if((tree.operator === '&&' && !left) || (tree.operator === '||' && left)) { //short-circuit
-                    returnVal = left;
-                    tree.left.value = left;
+                    try {
+                        returnVal = eval(left);
+                    } catch (ex) {
+                        console.error('There was an error when parsing expression', parseTree, ex);
+                        return '';
+                    }
                 } else {
                     right = expr(tree.right);
                     right = internalEval(right);
@@ -139,7 +143,7 @@ function evaluate(term, mapFunc, opts) {
                     } catch (ex) {
                         console.error('There was an error when parsing expression', parseTree, ex);
                         return '';
-                    }                    
+                    }
                 }
 
                 //console.log('Logical Operation:', tree.left.value, tree.operator, tree.right.value, returnVal);
